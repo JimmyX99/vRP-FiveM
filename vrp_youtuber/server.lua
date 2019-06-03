@@ -36,7 +36,7 @@ local function yt_skyfall(player, choice)
 	user_id = vRP.getUserId({player})
 	if(ytUtils[user_id] ~= true)then
 		ytUtils[user_id] = true
-		TriggerClientEvent('Skyfall:DoFall', player)
+		TriggerClientEvent('XD:Gimi', player)
 		vRPclient.notify(player, {"~r~[Youtuber] ~g~Ai grija sa activezi parasuta!"})
 	else
 		vRPclient.notify(player, {"~r~[Waiting]~r~Wait 1 minute to recharge the abilities"})
