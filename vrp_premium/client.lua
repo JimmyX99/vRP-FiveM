@@ -55,6 +55,12 @@ function vRPCpremium.spawnpremiumCar()
 	end
 end
 
+--Car Wash--
+RegisterNetEvent('wash:car')
+AddEventHandler('wash:car', function ()
+	WashDecalsFromVehicle(GetVehiclePedIsUsing(GetPlayerPed(-1)), 1.0)
+	SetVehicleDirtLevel(GetVehiclePedIsUsing(GetPlayerPed(-1)))
+end)
 
 -----------------------------------------------------------------------------------------------------------
 
