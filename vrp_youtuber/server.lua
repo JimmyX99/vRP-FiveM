@@ -32,17 +32,6 @@ local function yt_fixCar(player, choice)
 	end
 end
 
-local function yt_sky(player, choice)
-	user_id = vRP.getUserId({player})
-	if(ytUtils[user_id] ~= true)then
-		ytUtils[user_id] = true
-		TriggerClientEvent('XD:Gimi', player)
-		vRPclient.notify(player, {"~r~[Youtuber] ~g~Ai grija sa activezi parasuta!"})
-	else
-		vRPclient.notify(player, {"~r~[Waiting]~r~Wait 1 minute to recharge the abilities"})
-	end	
-end
-
 local function yt_rev(player, choice)
 	user_id = vRP.getUserId({player})
 		vRPclient.isInComa(player,{}, function(in_coma)
@@ -119,7 +108,6 @@ vRP.registerMenuBuilder({"main", function(add, data)
 					menu.name = "🎥Youtuber Menu🎥"
 					menu.css={top="75px",header_color="rgba(200,0,0,0.75)"}
 					menu.onclose = function(player) vRP.openMainMenu({player}) end -- nest menu
-					menu["Sky Fall"] = {yt_sky,"☁️  > Change the text with your description"}
 					menu["Fix Vehicle"] = {yt_fixCar,"🔧 > Change the text with your description"}
 					menu["Give Health&Food&Drink"] = {yt_revive,"🏥 > Change the text with your description"}
 					menu["Youtuber Revive"] =  {yt_rev,"🔮 > Change the text with your description"}
