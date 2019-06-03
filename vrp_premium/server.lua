@@ -34,6 +34,15 @@ local function sp_fixCar(player, choice)
 	end
 end
 
+local function sp_wash(player, choice)
+	user_id = vRP.getUserId({player})
+	if(spUtils[user_id] ~= true)then
+		TriggerClientEvent('wash:car', player)
+	else
+		vRPclient.notify(player, {"~y~[Premium] ~r~Wait 1 minute to recharge the abilities!"})
+	end
+end
+
 local function sp_revive(player, choice)
 	user_id = vRP.getUserId({player})
 	if(spUtils[user_id] ~= true)then
@@ -103,6 +112,7 @@ vRP.registerMenuBuilder({"main", function(add, data)
 					menu["Fix Vehicle"] = {sp_fixCar,"🔧 > Description"}
 					menu["Full HealthBar"] = {sp_revive,"🏥 > Description"}
 					menu["Weapons Packet "] = {sp_weapons,"🔫 > Description"}
+				        menu["Car Wash"] = {sp_wash,"🚿 > Description"}
 					menu["Premium Car"] = {sp_spawnCar,"🏎️ > Description"}
 					menu["Custom Chat Tag"] = {sp_chatTag,"🏷️ > Description"}
 					vRP.openMenu({player,menu})
