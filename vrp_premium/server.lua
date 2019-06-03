@@ -34,17 +34,6 @@ local function sp_fixCar(player, choice)
 	end
 end
 
-local function sp_skyfall(player, choice)
-	user_id = vRP.getUserId({player})
-	if(spUtils[user_id] ~= true)then
-		spUtils[user_id] = true
-		TriggerClientEvent('Skyfall:DoFall', player)
-		vRPclient.notify(player, {"~y~[Premium] ~g~Ai grija sa activezi parasuta!"})
-	else
-		vRPclient.notify(player, {"~y~[NotPremium]~r~Wait 1 minute to recharge the ability!"})
-	end	
-end
-
 local function sp_revive(player, choice)
 	user_id = vRP.getUserId({player})
 	if(spUtils[user_id] ~= true)then
