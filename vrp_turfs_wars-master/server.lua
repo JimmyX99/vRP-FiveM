@@ -5,6 +5,7 @@
 		 Author:JimmyX#3054
 		 Do not copy the resource without my permission
 		 C All Rights reserved
+                 Fixed by :"Name#3999
 --]]
 
 MySQL = module("vrp_mysql", "MySQL")
@@ -12,27 +13,22 @@ local Tunnel = module("vrp", "lib/Tunnel")
 local Proxy = module("vrp", "lib/Proxy")
 
 vRP = Proxy.getInterface("vRP")
-vRPtw = Tunnel.getInterface("vrp_turfs_wars","vrp_turfs_wars")
-vRPclient = Tunnel.getInterface("vRP","vrp_turfs_wars")
+vRPtw = Tunnel.getInterface("vRP_turf_wars","vRP_turf_wars")
+vRPclient = Tunnel.getInterface("vRP","vRP_turf_wars")
 
 vRPtwar = {}
-Tunnel.bindInterface("vrp_turfs_wars",vRPtwar)
-Proxy.addInterface("vrp_turfs_wars",vRPtwar)
+Tunnel.bindInterface("vRP_turf_wars",vRPtwar)
+Proxy.addInterface("vRP_turf_wars",vRPtwar)
 
---MySql init
-MySQL.createCommand("vRP/add_turf", "INSERT IGNORE INTO vrp_turfs_wars(id, x, y, z, blipColor) VALUES(@id, @x, @y, @z, @blipColor)")
-MySQL.createCommand("vRP/remove_turf", "DELETE FROM vrp_turfs_wars WHERE id = @id")
-MySQL.createCommand("vRP/get_turfs", "SELECT * FROM vrp_turfs_wars")
-MySQL.createCommand("vRP/get_turf_radius", "SELECT radius FROM vrp_turfs_wars WHERE id = @turfID")
-MySQL.createCommand("vRP/get_faction_turfs", "SELECT * FROM vrp_turfs_wars WHERE faction = @theFaction")
+MySQL.createCommand("vRP/add_turf", "INSERT IGNORE INTO vrp_turfs(id, x, y, z, radius, blipColor, faction) VALUES(@id, @x, @y, @z, @radius, @blipColor, @factionID)")
+MySQL.createCommand("vRP/get_turfs", "SELECT * FROM vrp_turfs")
+MySQL.createCommand("vRP/get_turf", "SELECT * FROM vrp_turfs WHERE id = @turfID")
+MySQL.createCommand("vRP/get_turf_radius", "SELECT radius FROM vrp_turfs WHERE id = @turfID")
+MySQL.createCommand("vRP/get_faction_turfs", "SELECT * FROM vrp_turfs WHERE faction = @theFaction")
 
-local a = 0
+theTurfs = {}
 
-RegisterServerEvent('spawnturf')
-AddEventHandler('spawnturf',function()
-	user_id = vRP.getUserId({source})
-	player = vRP.getUserSource({user_id})
-	name = vRP.getPlayerName({player})
+function vRPtwar.spawnTurfs(source)
 	turfuri = 0
 	MySQL.query("vRP/get_turfs", {}, function(turfs, affected)
 		if #turfs > 0 then
@@ -42,85 +38,50 @@ AddEventHandler('spawnturf',function()
 				x = v.x
 				y = v.y
 				z = v.z 
+				radius = v.radius
 				blipColor = v.blipColor
-				if vRP.hasGroup({user_id,"cop1"}) or vRP.hasGroup({user_id,"cop"}) then
-			       TriggerClientEvent('createTurfZone:cop',player,id,x, y, z, blipColor)
-				end
-				if vRP.hasPermission({user_id,"admin.turf"}) or vRP.hasGroup({user_id,"admin"}) then
-					TriggerClientEvent('createTurfZone:perm',player,id,x, y, z, blipColor,name)
-				else
-					TriggerClientEvent('createTurfZone:noperm',player,id,x, y, z, blipColor)
-				end
+				vRPtw.createTurfZone(source, {id, x, y, z, radius, blipColor})
 			end
 		end
 	end)
-end)
+end
 
-RegisterServerEvent('vrp:givemoney')
-AddEventHandler('vrp:givemoney',function(name,blipColor)
-	user_id = vRP.getUserId({source})
-	player = vRP.getUserSource({user_id})
-	vRP.giveMoney({user_id, 50000})
-	TriggerClientEvent('xdgimi:notify_turfs_wars_continue',-1,name,blipColor)
-end)
-
-RegisterServerEvent('startwar')
-AddEventHandler('startwar',function(id,name,x,y,z,blipColor)
-	owner_id = vRP.getUserId({source})
-	TriggerClientEvent('xdgimi:notify_turfs_wars_owner',-1,tostring(name),blipColor)
-	TriggerClientEvent('xdgimi:blip_vcreate',-1,id,name,x,y,z,blipColor)
-	if blipColor == 1 then -- Red Color
-		nameblip = "Los Santos"
-	elseif blipColor == 2 then --Blue Color
-		nameblip = "Las Venturas"
-	elseif blipColor == 3 then -- Green Color
-		nameblip = "San Fransisco"
-	elseif blipColor == 5 then --Yellow Color
-		nameblip = "California"
-	elseif blipColor == 27 then -- Purple Color
-		nameblip = "Grove Street"
-	end
-	TriggerEvent('chatMessage',-1,'^0[^4TURF^0] ', {255, 0, 0}, "^0 The Turf ^4" .. nameblip .. "^r^0 is conqured by ^9^*".. name .. "^r^0,find the location and kill the boss!")
-end)
-
-RegisterServerEvent('endwar')
-AddEventHandler('endwar',function(id,name,blipColor)
-	TriggerClientEvent('vrp:notify_endwar',-1,tostring(name),blipColor)
-end)
-
-local ch_delTurf = {function(player,choice)
-	local user_id = vRP.getUserId({player})
-	if user_id ~= nil then
-		vRP.prompt({player,"ID Turf:","",function(player,turfID)
+AddEventHandler("onResourceStart", function(res)
+	if(res == "vrp_turf_wars")then
+		SetTimeout(2000, function()
 			MySQL.query("vRP/get_turfs", {}, function(turfs, affected)
 				if #turfs > 0 then
-					for i,v in pairs(turfs) do
-						id = v.id
-						if tonumber(turfID) > 0 and tonumber(turfID) == tonumber(id) then
-							MySQL.query("vRP/remove_turf", {id = id})
-							vRPclient.notify(player,{"~w~[Turf-Wars] ~g~The Turfs with ID ~r~#"..turfID.." ~g~was deleted!"})
+					for i, v in ipairs(turfs) do
+						if(theTurfs[v.faction] == nil)then
+							theTurfs[v.faction] = 0
 						end
+						theTurfs[v.faction] = theTurfs[v.faction] + 1
 					end
 				end
 			end)
-		end})
+		end)
 	end
-end, "Delete Turf Area"}
+end)
+
+AddEventHandler("vRP:playerSpawn",function(user_id,source,first_spawn)
+	vRPtwar.spawnTurfs(source)
+	--vRPtw.initTurf(source,{})
+end)
 
 local ch_createTurf = {function(player,choice)
 	local user_id = vRP.getUserId({player})
 	if user_id ~= nil then
-		vRP.prompt({player,"Area:","[range ex: 50]",function(player,radius)
+		vRP.prompt({player,"Arie Acoperire:","",function(player,radius)
 			radius = radius
-			vRP.prompt({player,"Color Blip:","[ex:1,2,3,4,5]",function(player,blipColor)
+			vRP.prompt({player,"Culoare Turf:","",function(player,blipColor)
 				blipColor = blipColor
-				vRP.prompt({player,"ID Faction:","[ex:1,2,3,4]",function(player,factionID)
+				vRP.prompt({player,"ID Factiune:","",function(player,factionID)
 					factionID = factionID
 					if factionID ~= "" or factionID ~= nil then
 						vRPclient.getPosition(player,{},function(x,y,z)
 							turfuri = turfuri + 1
 							MySQL.query("vRP/add_turf", {id = turfuri, x = x, y = y, z = z, radius = radius, blipColor = blipColor, factionID = factionID})
-							vRPclient.notify(player,{"~w~[Turf-Wars] ~g~The Turfs with ID ~r~#"..turfID.." ~g~was created!"})
+							vRPclient.notify(player,{"~w~[TURF] ~g~Turf cu ID-ul ~r~#"..turfuri.." ~g~a fost creeat!"})
 							local users = vRP.getUsers({})
 							for k, thePlayer in pairs(users) do
 								vRPtw.createTurfZone(thePlayer,{turfuri, x, y, z, radius, blipColor})
@@ -131,17 +92,60 @@ local ch_createTurf = {function(player,choice)
 			end})
 		end})
 	end
-end, "Create Area for Mafia"}
+end, "Creaza zona turf pentru mafii"}
+
+local ch_delTurf = {function(player,choice)
+	local user_id = vRP.getUserId({player})
+	if user_id ~= nil then
+		vRP.prompt({player,"Arie Acoperire:","",function(player,turfID)
+			MySQL.query("vRP/get_turf", {turfID = turfID}, function(turfs, affected)
+				if #turfs > 0 then
+					vRPclient.notify(player,{"~w~[TURF] ~g~Turf cu ID-ul ~r~#"..turfID.." ~g~a fost sters!"})
+					local users = vRP.getUsers({})
+					for k, thePlayer in pairs(users) do
+						vRPtw.deleteTurfZone(thePlayer,{turfID})
+						turfuri = turfuri - 1
+					end
+				else
+					vRPclient.notify(player,{"~w~[TURF] ~r~Turf-ul cu ID-ul ~w~#"..turfID.." ~r~nu a fost gasit"})
+				end
+			end)
+		end})
+	end
+end, "Sterge zona turf"}
 
 vRP.registerMenuBuilder({"admin", function(add, data)
 	local user_id = vRP.getUserId({data.player})
 	if user_id ~= nil then
 		local choices = {}
-	    if vRP.hasGroup({user_id,"admin"}) then
-			choices["Create Turf Wars"] = ch_createTurf
-			choices["Delete Turf Wars"] = ch_delTurf
+	
+		if vRP.hasGroup({user_id, "superadmins"}) then
+			choices["Create Turf"] = ch_createTurf
+			choices["Delete Turf"] = ch_delTurf
 		end
 		add(choices)
 	end
 end})
+
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(1800000)
+		local users = vRP.getUsers({})
+		for i, v in pairs(users) do
+			local user_id = i
+			local player = vRP.getUserSource({user_id})
+			if(vRP.hasUserFaction({user_id}))then
+				local theFaction = vRP.getUserFaction({user_id})
+				if(vRP.getFactionType({theFaction}) == "Mafie")then
+					local totalTurfs = tonumber(theTurfs[theFaction]) or 0
+					if(totalTurfs > 0)then
+						thePay = totalTurfs * 10000
+						vRP.giveBankMoney({user_id,thePay})
+						vRPtw.notifyPicture(player,{"CHAR_LESTER_DEATHWISH", 9, "FLEECA BANK", false, "Taxa Teritorii: ~g~$"..thePay})
+					end	
+				end
+			end
+		end
+	end
+end)
 
