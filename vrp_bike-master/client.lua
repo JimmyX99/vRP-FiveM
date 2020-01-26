@@ -67,7 +67,7 @@ Citizen.CreateThread(function()
             local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
             local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, -522.53924560546,-257.52703857422,35.639526367188)
             if dist <= 1.40 then
-                AddTextEntry("FREE_BIKE", "Press ~b~INPUT_CONTEXT for buy a free bmx!")
+                AddTextEntry("FREE_BIKE", "Press ~INPUT_CONTEXT~ for buy a free bmx!")
                 DisplayHelpTextThisFrame("FREE_BIKE",false )
                 if IsControlJustPressed(0,51) and IsPedOnFoot(PlayerPedId()) then
                     Citizen.Wait(100)  
