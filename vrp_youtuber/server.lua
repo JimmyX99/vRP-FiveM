@@ -1,7 +1,7 @@
 --[[
 		 The script is releases for free
 		 This is a Youtuber Menu with only Permission
-		 Author:Gimi#0001
+		 Author:ZED#1337
 		 All rights reserved
 		 Do not copy the resource without my permission
 		 Only for vRP
