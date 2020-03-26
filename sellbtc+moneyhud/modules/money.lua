@@ -351,101 +351,12 @@ local function ch_give(player,choice)
 	end
 end
 
-local function ch_givebtc(player,choice)
-  -- get nearest player
-  local user_id = vRP.getUserId(player)
-  if user_id ~= nil then
-    vRPclient.getNearestPlayers(player,{15},function(nplayers)
-      usrList = ""
-      for k,v in pairs(nplayers) do
-        usrList = usrList .. "[" .. vRP.getUserId(k) .. "]" .. GetPlayerName(k) .. " | "
-      end
-      if usrList ~= "" then
-        vRP.prompt(player,"Jucatori: " .. usrList .. "","",function(player,nuser_id) 
-          nuser_id = nuser_id
-          if nuser_id ~= nil and nuser_id ~= "" then 
-            local target = vRP.getUserSource(tonumber(nuser_id))
-            if target ~= nil then
-              vRP.prompt(player,lang.money.give.prompt(),"",function(player,amount)
-                local amount = parseInt(amount)
-                if amount > 0 and vRP.tryXZPayment(user_id,amount) then
-                      local pID = vRP.getUserId(target)
-                      local money = vRP.getXZCoins(pID)
-                      vRP.giveXZcoins(pID,amount)
-					  vRPclient.notify(player,{"Ai dat suma de"..amount.."Diamante"})
-                      vRPclient.notify(target,{"Ai primit suma de"..amount.."Diamante"})
-                    else
-						vRPclient.notify(player,{"Nu ai destule Diamante"})
-                    end
-                  end)
-                else
-                vRPclient.notify(player,{"~r~Acest ID este invalid!"})
-            end
-          else
-            vRPclient.notify(player,{"~r~Nici un ID selectat!"})
-          end
-        end)
-      else
-        vRPclient.notify(player,{lang.common.no_player_near()})
-      end
-    end)
-  else
-    vRPclient.notify(player,{lang.common.no_player_near()})
-  end
-end
-
-local function ch_givedmd(player,choice)
-  -- get nearest player
-  local user_id = vRP.getUserId(player)
-  if user_id ~= nil then
-    vRPclient.getNearestPlayers(player,{15},function(nplayers)
-      usrList = ""
-      for k,v in pairs(nplayers) do
-        usrList = usrList .. "[" .. vRP.getUserId(k) .. "]" .. GetPlayerName(k) .. " | "
-      end
-      if usrList ~= "" then
-        vRP.prompt(player,"Jucatori: " .. usrList .. "","",function(player,nuser_id) 
-          nuser_id = nuser_id
-          if nuser_id ~= nil and nuser_id ~= "" then 
-            local target = vRP.getUserSource(tonumber(nuser_id))
-            if target ~= nil then
-              vRP.prompt(player,lang.money.give.prompt(),"",function(player,amount)
-                local amount = parseInt(amount)
-                if amount > 0 and vRP.tryDMPayment(user_id,amount) then
-                      local pID = vRP.getUserId(target)
-                      local money = vRP.getdiamonds(pID)
-                      vRP.givediamonds(pID,amount)
-                      vRPclient.notify(player,{"Ai dat suma de"..amount.."Diamante"})
-                      vRPclient.notify(target,{"Ai primit suma de"..amount.."Diamante"})
-                    else
-                      vRPclient.notify(player,{"Nu ai destule Diamante"})
-                    end
-                  end)
-                else
-                vRPclient.notify(player,{"~r~Acest ID este invalid!"})
-            end
-          else
-            vRPclient.notify(player,{"~r~Nici un ID selectat!"})
-          end
-        end)
-      else
-        vRPclient.notify(player,{lang.common.no_player_near()})
-      end
-    end)
-  else
-    vRPclient.notify(player,{lang.common.no_player_near()})
-  end
-end
-
 -- add player give money to main menu
 vRP.registerMenuBuilder("main", function(add, data)
   local user_id = vRP.getUserId(data.player)
   if user_id ~= nil then
     local choices = {}
 	choices[lang.money.give.title()] = {ch_give, lang.money.give.description()}
-	--choices["Ofera Bitcoins"] = {ch_givebtc, "Ofera <font color='yellow'>BTC </font> Celui mai apropiat jucator"}
-	--choices["Ofera Diamante"] = {ch_givedmd, "Ofera <font color='blue'>Diamante </font> Celui mai apropiat jucator"}
-
     add(choices)
   end
 end)
