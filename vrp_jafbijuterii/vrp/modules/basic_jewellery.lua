@@ -86,7 +86,7 @@ local function jimmy_biju(source)
   local user_id = vRP.getUserId(source)
   if user_id ~= nil then
 	  k = 1
-      vRPclient.addBlip(source,{x,y,z,431,49,"Sell Jewllery"})
+      vRPclient.addBlip(source,{x,y,z,431,49,"Sell Jewellery"})
       vRPclient.addMarker(source,{x,y,z-1,0.7,0.7,0.5,255,178,0,125,150})
       vRPclient.addMarkerSign(source,{x,y,z-1.25,0.45, 0.45, 0.45, 255, 178, 0,150,150,1,false,0})
       vRPclient.addMarkerNames(source,{x,y,z+0.570, "~r~Sell\n~b~Jewellery", 1, 1.2})
