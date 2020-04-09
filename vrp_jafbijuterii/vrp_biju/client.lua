@@ -1,6 +1,6 @@
 
 --[[
-      Sctipt: Jaf la Magazin
+      Sctipt: Jewellery of Vangelico
       Author: Jimmy#1337
       Don t upload the resource without my permission 
       All rights reserved
