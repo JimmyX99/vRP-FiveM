@@ -5,7 +5,7 @@
 		 Author:JimmyX#3054
 		 Do not copy the resource without my permission
 		 C All Rights reserved
-                 Fixed by :"Name#3999
+               
 --]]
 
 MySQL = module("vrp_mysql", "MySQL")
