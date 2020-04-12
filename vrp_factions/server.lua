@@ -357,7 +357,6 @@ local function ch_removeFaction(player,choice)
 			if(tonumber(id)) and (id > 0) and (id ~= "") and (id ~= nil)then
 				local target = vRP.getUserSource(id)
 				if(target)then
-					--if(vRP.isUserInFaction(id,theFaction))then
 						local name = GetPlayerName(target)
 						vRPclient.notify(player,{"~w~Removed ~g~"..name.." ~w~ from ~g~"..theFaction.."!"})
 						vRPclient.notify(target,{"~w~You are removed from ~g~"..theFaction.."!"})
@@ -365,9 +364,6 @@ local function ch_removeFaction(player,choice)
 						if(vRP.hasGroup(id,"onduty"))then
 							vRP.removeUserGroup(id,"onduty")
 						end
-					--[[else
-						vRPclient.notify(player,{"~w~Jucatorul ~g~"..name.." ~w~nu este membru in factiunea ~g~"..theFaction.."!"})
-					end]]
 				else
 					vRPclient.notify(player,{"~w~Removed ~g~"..id.." ~w~from ~g~"..theFaction.."!"})
 					vRP.removeUserFaction(id,theFaction)
@@ -562,7 +558,7 @@ local function ch_membersList(player,choice)
 	end)
 end
 
-local function ch_laveFaction(player,choice)
+local function ch_leaveFaction(player,choice)
 	vRP.openMainMenu(player)
 	player = player
 	SetTimeout(400, function()
@@ -632,26 +628,6 @@ local function ch_ranksAndSalary(player,choice)
 	end)
 end
 
-local function ch_signContract(player,choice)
-	player = player
-	local user_id = vRP.getUserId(player)
-	local theFaction = vRP.getUserFaction(user_id)
-	vRP.prompt(player,"User id: ","",function(player,id)
-		id = parseInt(id)
-		theTarget = vRP.getUserSource(id)
-		if(theTarget)then
-			targetFaction = vRP.getUserFaction(id)
-			if(targetFaction == theFaction)then
-				vRP.giveInventoryItem(id,"fac_doc|"..theFaction,1,true,theFaction.."<br/><font color ='white'>Angajator:</font> <font color='red'>"..GetPlayerName(player).."("..user_id..")</font><br/><font color ='white'>Angajat:</font> <font color='green'>"..GetPlayerName(theTarget).."("..id..")</font>")
-				vRPclient.notify(player, {"~g~Ai inmanat contractul de angajare lui ~y~"..GetPlayerName(theTarget)})
-				vRPclient.notify(theTarget, {"~y~"..GetPlayerName(player).."~g~ ti-a inmanat contractul de angajare!"})
-			else
-				vRPclient.notify(player, {"~r~Jucatorul nu este in factiune!"})
-			end
-		end
-	end)
-end
-
 vRP.registerMenuBuilder("main", function(add, data)
 	local user_id = vRP.getUserId(data.player)
 	if user_id ~= nil then
@@ -700,7 +676,6 @@ vRP.registerMenuBuilder("main", function(add, data)
 						if(leader or coleader)then
 							menu["Invite Member"] = {ch_inviteFaction, "Invite Member in faction"}
 							menu["Exclude Member"] = {ch_removeFaction, "Exclude Member from faction"}
-							menu["Sign Contract"] = {ch_signContract, "Sign Contract from a member"}
 							menu["Promote Leader"] = {ch_promoteLeader, "Promote/Demote Member at Co-Leader/Member"}
 						end
 						if(leader)then
@@ -719,7 +694,7 @@ vRP.registerMenuBuilder("main", function(add, data)
 						end
 						menu["Member List"] = {ch_membersList, "Member List "..theFaction}
 						menu["Rank & Payday"] = {ch_ranksAndSalary, "Rankuri si Salarii"}
-						menu["Leave Factions"] = {ch_laveFaction, "Leave Factions "..theFaction}
+						menu["Leave Factions"] = {ch_leaveFaction, "Leave Factions "..theFaction}
 						vRP.openMenu(player,menu)
 					end)
 				end, infoText}
