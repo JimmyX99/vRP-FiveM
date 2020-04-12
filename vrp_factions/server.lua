@@ -3,14 +3,14 @@ local factions = cfg.factions
 
 factionMembers = {}
 
-MySQL.createCommand("vRP/get_faction_members","SELECT * FROM vrp_users WHERE faction = @faction")
-MySQL.createCommand("vRP/get_user_faction","SELECT * FROM vrp_users WHERE id = @user_id")
-MySQL.createCommand("vRP/set_user_faction","UPDATE vrp_users SET faction = @group, factionRank = @rank WHERE id = @user_id")
-MySQL.createCommand("vRP/set_faction_leader","UPDATE vrp_users SET isFactionLeader = @leader WHERE id = @user_id")
-MySQL.createCommand("vRP/set_faction_coleader","UPDATE vrp_users SET isFactionCoLeader = @coleader WHERE id = @user_id")
-MySQL.createCommand("vRP/set_faction_rank","UPDATE vrp_users SET factionRank = @rank WHERE id = @user_id")
+MySQL.createCommand("vRP/get_faction_members","SELECT * FROM vrp_factions WHERE faction = @faction")
+MySQL.createCommand("vRP/get_user_faction","SELECT * FROM vrp_factions WHERE id = @user_id")
+MySQL.createCommand("vRP/set_user_faction","UPDATE vrp_factions SET faction = @group, factionRank = @rank WHERE id = @user_id")
+MySQL.createCommand("vRP/set_faction_leader","UPDATE vrp_factions SET isFactionLeader = @leader WHERE id = @user_id")
+MySQL.createCommand("vRP/set_faction_coleader","UPDATE vrp_factions SET isFactionCoLeader = @coleader WHERE id = @user_id")
+MySQL.createCommand("vRP/set_faction_rank","UPDATE vrp_factions SET factionRank = @rank WHERE id = @user_id")
 
-MySQL.createCommand("vRP/get_user","SELECT * FROM vrp_users WHERE id = @user_id")
+MySQL.createCommand("vRP/get_user","SELECT * FROM vrp_factions WHERE id = @user_id")
 
 function getFactionMembers()
 	for i, v in pairs(factions) do
