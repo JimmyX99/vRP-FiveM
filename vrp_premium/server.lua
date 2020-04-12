@@ -108,7 +108,6 @@ vRP.registerMenuBuilder({"main", function(add, data)
 					menu.name = "💰Premium Menu💰"
 					menu.css={top="75px",header_color="rgba(200,0,0,0.75)"}
 					menu.onclose = function(player) vRP.openMainMenu({player}) end -- nest menu
-					menu["Sky Dive"] = {sp_skyfall,"☁️  > Description"}
 					menu["Fix Vehicle"] = {sp_fixCar,"🔧 > Description"}
 					menu["Full HealthBar"] = {sp_revive,"🏥 > Description"}
 					menu["Weapons Packet "] = {sp_weapons,"🔫 > Description"}
