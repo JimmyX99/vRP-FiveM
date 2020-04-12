@@ -657,18 +657,18 @@ vRP.registerMenuBuilder("main", function(add, data)
 				end
 				if(salary > 0)then
 					if(#members == fSlots)then
-						infoText = "Nume: <font color='red'>"..theFaction.."</font><br/>Members: <font color='red'>"..#members.."</font>/<font color='red'>"..fSlots.."</font><br/>Type: <font color='cyan'>"..fType.."</font><br/>Rank: <font color='grey'>"..rank.."</font><br/>Duty: <font color='green'>"..Duty.."</font><br/>Salary: <font color='green'>$"..salary.."</font><br/>Statut: <font color='yellow'>"..isLeader.."</font>"
+						infoText = "Name: <font color='red'>"..theFaction.."</font><br/>Members: <font color='red'>"..#members.."</font>/<font color='red'>"..fSlots.."</font><br/>Type: <font color='cyan'>"..fType.."</font><br/>Rank: <font color='grey'>"..rank.."</font><br/>Duty: <font color='green'>"..Duty.."</font><br/>Salary: <font color='green'>$"..salary.."</font><br/>Statut: <font color='yellow'>"..isLeader.."</font>"
 					else
-						infoText = "Nume: <font color='red'>"..theFaction.."</font><br/>Members: <font color='white'>"..#members.."</font>/<font color='red'>"..fSlots.."</font><br/>Type: <font color='cyan'>"..fType.."</font><br/>Rank: <font color='grey'>"..rank.."</font><br/>Duty: <font color='red'>"..Duty.."</font><br/>Salary: <font color='green'>$"..salary.."</font><br/>Statut: <font color='yellow'>"..isLeader.."</font>"
+						infoText = "Name: <font color='red'>"..theFaction.."</font><br/>Members: <font color='white'>"..#members.."</font>/<font color='red'>"..fSlots.."</font><br/>Type: <font color='cyan'>"..fType.."</font><br/>Rank: <font color='grey'>"..rank.."</font><br/>Duty: <font color='red'>"..Duty.."</font><br/>Salary: <font color='green'>$"..salary.."</font><br/>Statut: <font color='yellow'>"..isLeader.."</font>"
 					end
 				else
 					if(#members == fSlots)then
-						infoText = "Nume: <font color='red'>"..theFaction.."</font><br/>Members: <font color='red'>"..#members.."</font>/<font color='red'>"..fSlots.."</font><br/>Type: <font color='cyan'>"..fType.."</font><br/>Rank: <font color='grey'>"..rank.."</font><br/>Status: <font color='blue'>"..isLeader.."</font>"
+						infoText = "Name: <font color='red'>"..theFaction.."</font><br/>Members: <font color='red'>"..#members.."</font>/<font color='red'>"..fSlots.."</font><br/>Type: <font color='cyan'>"..fType.."</font><br/>Rank: <font color='grey'>"..rank.."</font><br/>Status: <font color='blue'>"..isLeader.."</font>"
 					else
-						infoText = "Nume: <font color='red'>"..theFaction.."</font><br/>Members: <font color='yellow'>"..#members.."</font>/<font color='red'>"..fSlots.."</font><br/>Type: <font color='cyan'>"..fType.."</font><br/>Rank: <font color='grey'>"..rank.."</font><br/>Status: <font color='blue'>"..isLeader.."</font>"	
+						infoText = "Name: <font color='red'>"..theFaction.."</font><br/>Members: <font color='yellow'>"..#members.."</font>/<font color='red'>"..fSlots.."</font><br/>Type: <font color='cyan'>"..fType.."</font><br/>Rank: <font color='grey'>"..rank.."</font><br/>Status: <font color='blue'>"..isLeader.."</font>"	
 					end
 				end
-				choices["Meniu Factiune"] = {function(player,choice)
+				choices["Faction Menu"] = {function(player,choice)
 					vRP.buildMenu(theFaction, {player = player}, function(menu,ok)
 						menu.name = theFaction
 						menu.css={top="75px",header_color="rgba(200,0,0,0.75)"}
