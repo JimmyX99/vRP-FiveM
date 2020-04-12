@@ -614,8 +614,8 @@ local function ch_ranksAndSalary(player,choice)
 	local theFaction = vRP.getUserFaction(user_id)
 	local ranks = vRP.getFactionRanks(theFaction)
 	SetTimeout(400, function()
-		vRP.buildMenu("Rankuri & Salarii", {player = player}, function(rsMenu)
-			rsMenu.name = "Rankuri & Salarii"
+		vRP.buildMenu("Ranks & Salaries", {player = player}, function(rsMenu)
+			rsMenu.name = "Ranks & Salaries"
 			rsMenu.css={top="75px",header_color="rgba(200,0,0,0.75)"}
 			rsMenu.onclose = function(player) vRP.openMainMenu(player) end
 			for i, v in pairs(ranks) do
