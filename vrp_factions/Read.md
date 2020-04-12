@@ -1,0 +1,1 @@
+Hello Guys, Jimmy is back with a new release.This is a new version of vrp_factions with On/Off Duty and Promote/Demote Leader/Co-Leader/Member! Don't upload the resource without my permission! Enjoy:D
