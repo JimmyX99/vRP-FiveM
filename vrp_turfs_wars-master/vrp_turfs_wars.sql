@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `vrp_turfs`
 --
 
-CREATE TABLE `vrp_turfs` (
+CREATE TABLE `vrp_turfs_wars` (
   `id` int(255) NOT NULL,
   `x` float NOT NULL,
   `y` float NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE `vrp_turfs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Indexes for table `vrp_turfs`
+-- Indexes for table `vrp_turfs_wars`
 --
 ALTER TABLE `vrp_turfs`
   ADD PRIMARY KEY (`id`);
