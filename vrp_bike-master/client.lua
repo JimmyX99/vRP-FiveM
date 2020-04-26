@@ -6,12 +6,9 @@
 		 Only for vRP
 --]]
 
-local table = { 
-    {x = -522.17541503906, y = -256.66757202148, z = 35.645778656006},
-    {x = -11.1693277359, y = -1099.5509033204, z = 26.672046661376},
-}
+local locatie = {x = -522.17541503906, y = -256.66757202148, z = 35.645778656006}
 
-local blips = { --Add location here
+local culoareblips = { --Add location here
    {title="Free Bikes!", colour=2, id=376, x = -522.17541503906, y = -256.66757202148, z = 35.645778656006},
    {title="Free Bikes!", colour=2, id=376, x = -11.1693277359, y = -1099.5509033204, z = 26.672046661376},
 }
@@ -19,7 +16,7 @@ local blips = { --Add location here
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Citizen.CreateThread(function()
-    for _, info in pairs(blips) do
+    for _, info in pairs(culoareblips) do
     info.blip = AddBlipForCoord(info.x, info.y, info.z)
     SetBlipSprite(info.blip, info.id)
     SetBlipDisplay(info.blip, 3)
@@ -32,9 +29,9 @@ Citizen.CreateThread(function()
   end
 end)
 
-function hash_bike()
+function bicicleta_jimmy()
   local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
-  local hash = GetHashKey("bmx")  
+  local hash = GetHashKey("bmx") -- Request Model Hash add everything you want
   local ve =   CreateVehicle(hash,plyCoords, true, false)
   local ped = GetPlayerPed(-1)
   
@@ -52,9 +49,10 @@ end
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-        for k in pairs(table) do
+        for k in pairs(locatie) do
             -- Draw Marker Here --
-            DrawMarker(38, -523.30078125,-257.3540649414,35.646186828614, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 0, 255, 200, 1, 0, 2, 1, 0, 0, 0)
+            DrawMarker(38, locatie.x,locatie.y,locatie.z, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 0, 255, 200, 1, 0, 2, 1, 0, 0, 0)
+            --List Of all Markers is on Fivem Natives
         end
     end
 end)
@@ -62,18 +60,19 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-        for k in pairs(table) do
+        for k in pairs(locatie) do
             local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
             local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, -522.53924560546,-257.52703857422,35.639526367188)
             if dist <= 1.40 then
-                AddTextEntry("FREE_BIKE", "Press ~INPUT_CONTEXT~ for buy a free bmx!")
+                AddTextEntry("FREE_BIKE", "Apasa ~INPUT_CONTEXT~ Ca sa cumperi o bicicleta gratis!")
                 DisplayHelpTextThisFrame("FREE_BIKE",false )
                 if IsControlJustPressed(0,51) and IsPedOnFoot(PlayerPedId()) then
-                    Citizen.Wait(100)  
-                    hash_bike()
+                    Citizen.Wait(100)
+                    bicicleta_jimmy()
                 end
             end
         end
     end
 end)
+
 
