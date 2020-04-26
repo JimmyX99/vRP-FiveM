@@ -34,7 +34,7 @@ CREATE TABLE `vrp_turfs_wars` (
 --
 -- Indexes for table `vrp_turfs_wars`
 --
-ALTER TABLE `vrp_turfs`
+ALTER TABLE `vrp_turfs_wars`
   ADD PRIMARY KEY (`id`);
 
 
