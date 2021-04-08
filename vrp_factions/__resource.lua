@@ -10,6 +10,8 @@ client_scripts{
   "cfg/factions.lua"
 }
 
-server_scripts{ 
-  "server.lua"
+server_scripts{
+    '@vrp/lib/utils.lua',
+    '@vrp/lib/Tools.lua',
+    'server.lua'
 }
